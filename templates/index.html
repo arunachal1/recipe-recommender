@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Recommender</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 font-sans">
+    <div class="container mx-auto p-6">
+        <h1 class="text-3xl font-bold text-center mb-6">Recipe Recommender</h1>
+        <form method="POST" action="/" class="bg-white p-6 rounded-lg shadow-md mb-6">
+            <div class="mb-4">
+                <label for="ingredients" class="block text-sm font-medium text-gray-700">Ingredients (comma-separated)</label>
+                <input type="text" name="ingredients" id="ingredients" class="mt-1 block w-full p-2 border border-gray-300 rounded-md" placeholder="e.g., chicken, rice, tomato">
+            </div>
+            <div class="mb-4">
+                <label for="cuisine" class="block text-sm font-medium text-gray-700">Cuisine (optional)</label>
+                <select name="cuisine" id="cuisine" class="mt-1 block w-full p-2 border border-gray-300 rounded-md">
+                    <option value="">Any Cuisine</option>
+                    {% for c in cuisines %}
+                    <option value="{{ c }}">{{ c }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Find Recipes</button>
+        </form>
+        {% if error %}
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6" role="alert">
+            {{ error }}
+        </div>
+        {% endif %}
+        {% if ingredients %}
+        <div class="bg-gray-200 p-4 rounded-lg mb-6">
+            <p class="text-lg font-semibold">Your Search:</p>
+            <p><strong>Ingredients:</strong> {{ ingredients }}</p>
+            {% if cuisine %}
+            <p><strong>Cuisine:</strong> {{ cuisine }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        {% if recommendations %}
+        <h2 class="text-2xl font-semibold mb-4">Recommended Recipes</h2>
+        {% for rec, score in recommendations %}
+        <div class="bg-white p-6 rounded-lg shadow-md mb-4">
+            <h3 class="text-xl font-bold">{{ rec.TranslatedRecipeName }} (Score: {{ score|format_score }})</h3>
+            <p class="text-gray-700"><strong>Cuisine:</strong> {{ rec.Cuisine }}</p>
+            <p class="text-gray-700"><strong>Ingredients:</strong> {{ rec.TranslatedIngredients }}</p>
+            <p class="text-gray-700"><strong>Instructions:</strong> {{ rec.TranslatedInstructions }}</p>
+        </div>
+        {% endfor %}
+        {% endif %}
+    </div>
+</body>
+</html>
