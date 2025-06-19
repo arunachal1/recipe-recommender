@@ -16,8 +16,8 @@ app = Flask(__name__)
 nltk.download('punkt')
 nltk.download('stopwords')
 
-BASE_DIR = '/home/arunachal/Programming/apps/recipe_recommender/'
-DATA_DIR = os.path.join(BASE_DIR, 'data/')
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = os.path.join(BASE_DIR, 'data')
 DATA_PATH = os.path.join(DATA_DIR, 'processed_recipes_enhanced.csv')
 GLOVE_PATH = os.getenv('GLOVE_PATH', os.path.join(DATA_DIR, 'glove.6B.100d.txt'))
 COUNTVEC_PATH = os.path.join(BASE_DIR, 'count_vectorizer.pkl')
